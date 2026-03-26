@@ -35,3 +35,14 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Claves privadas y credenciales (nunca al repositorio)
+*.ppk
+*.pem
+*.key
+
+# Planes de Terraform
+*tfplan*
+
+# Documentación con datos de la cuenta (IDs, IPs)
+Docs/*.csv
