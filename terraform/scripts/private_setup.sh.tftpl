@@ -1,0 +1,17 @@
+#!/bin/bash
+# Servidor privado: instala el cliente EFS y monta el sistema de archivos en /mnt/efs.
+# La salida a Internet depende de la NAT, que puede tardar en estar lista: se reintenta.
+set -ux
+
+for i in $(seq 1 30); do
+  dnf install -y amazon-efs-utils && break
+  sleep 20
+done
+
+mkdir -p /mnt/efs
+echo "${efs_id}:/ /mnt/efs efs _netdev,tls 0 0" >> /etc/fstab
+
+for i in $(seq 1 15); do
+  mount -a -t efs && break
+  sleep 10
+done

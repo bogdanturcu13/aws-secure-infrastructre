@@ -1,0 +1,19 @@
+#!/bin/bash
+# Configura la instancia como NAT (Amazon Linux 2023): IP forwarding + masquerading
+set -euxo pipefail
+
+dnf install -y iptables-services
+
+# Reenvío de paquetes IP (persistente)
+echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/90-nat.conf
+sysctl --system
+
+# Interfaz de red principal (ens5 en AL2023, no eth0)
+IFACE=$(ip -o -4 route show to default | awk '{print $5}' | head -n1)
+
+systemctl enable --now iptables
+iptables -t nat -A POSTROUTING -o "$IFACE" -s ${private_subnet_cidr} -j MASQUERADE
+iptables -F FORWARD
+
+# Guardar reglas para que sobrevivan a un reinicio
+iptables-save > /etc/sysconfig/iptables
