@@ -1,0 +1,41 @@
+# ============================================================================
+# ARCHIVO DE VARIABLES - terraform.tfvars
+# ============================================================================
+# Este archivo contiene los valores específicos para tu despliegue
+# Cópialo a terraform.tfvars y personaliza según tus necesidades
+
+aws_region = "eu-west-1"
+project_name = "secure-cloud-arch"
+environment = "production"
+
+# Configuración de VPC
+vpc_cidr = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+private_subnet_cidr = "10.0.2.0/24"
+availability_zone = "eu-west-1a"
+
+# Tipos de instancia (mantener cost-effective)
+nat_instance_type = "t3.micro"
+private_instance_type = "t3.micro"
+
+# Monitoreo
+enable_nat_metrics = false
+
+# KMS
+kms_key_deletion_window = 7
+
+# CloudTrail y Auditoría
+enable_cloudtrail = true
+cloudtrail_s3_retention_days = 90
+ssm_session_recording_enabled = true
+
+# VPC Flow Logs (útil para troubleshooting)
+enable_vpc_flow_logs = true
+
+# Tags adicionales
+tags = {
+  Owner       = "CloudTeam"
+  CostCenter  = "Engineering"
+  Environment = "Production"
+  ManagedBy   = "Terraform"
+}
